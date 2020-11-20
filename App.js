@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, { useContext } from 'react';
 import { NavigationContainer, StackActions } from '@react-navigation/native';
 import { createStackNavigator, useHeaderHeight } from '@react-navigation/stack';
 import { View, Text } from 'react-native';
@@ -10,9 +10,10 @@ import WelcomeScreen from './screens/WelcomeScreen';
 import SignInScreen from './screens/SignInScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import ForgotPassScreen from './screens/ForgotPassScreen';
-
+import AuthContext from './context/AuthContext';
+import {AuthProvider} from './context/AuthContext';
+import Main from './components/Main';
 const Stack = createStackNavigator();
-let isLoggedIn = false;
 
 //  will need to write a function that checks for token in the async storage
 // can use conditional logic to show the sign in screen or the home screen
@@ -21,27 +22,12 @@ let isLoggedIn = false;
 // next step style the header for the sign up screens 
 
 const App = () => {
-
   return (
+    <AuthProvider>
     <ThemeProvider>
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-      {isLoggedIn ? (
-          <>
-            <Stack.Screen name="Home" component={HomeScreen} />
-            <Stack.Screen name="Profile" component={ProfileScreen} />
-          </>
-        ) : (
-          <>
-            <Stack.Screen name="Welcome" options={{headerShown: false}} component={WelcomeScreen} />
-            <Stack.Screen options={{ headerTransparent:true, title: 'Herd', headerTitleAlign:'center'}} name="SignUp" component={SignUpScreen} />
-            <Stack.Screen options={{ headerTransparent:true, title: "Herd", headerTitleAlign:'center'}} name="SignIn" component={SignInScreen} />
-            <Stack.Screen options={{ headerTransparent:true, title: "Herd", headerTitleAlign:'center'}} name="ForgotPass" component={ForgotPassScreen} />
-          </>
-        )}
-      </Stack.Navigator>
-    </NavigationContainer>
+      <Main />
     </ThemeProvider>
+    </AuthProvider>
   );
 };
 

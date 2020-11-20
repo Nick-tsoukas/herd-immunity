@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button, Text } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
+import AuthContext from '../context/AuthContext';
 
 const WelcomeScreen = ({navigation}, props) => {
+    const value = useContext(AuthContext);
     return(
         <LinearGradient colors={['#7cffcb', '#74f2ce']} style={styles.screen}>
             <View style={styles.title}>
-                <Text h3>Herd Immunity</Text>
+            <Text h3>Herd Immunity</Text>
             </View>
             <View style={styles.message}>
                 <Text style={styles.messageText}>
