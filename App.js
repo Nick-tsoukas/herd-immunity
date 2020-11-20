@@ -1,16 +1,7 @@
 import 'react-native-gesture-handler';
-import React, { useContext } from 'react';
-import { NavigationContainer, StackActions } from '@react-navigation/native';
-import { createStackNavigator, useHeaderHeight } from '@react-navigation/stack';
-import { View, Text } from 'react-native';
+import React from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
 import { ThemeProvider } from 'react-native-elements';
-import HomeScreen from './screens/HomeScreen';
-import ProfileScreen from './screens/ProfileScreen';
-import WelcomeScreen from './screens/WelcomeScreen';
-import SignInScreen from './screens/SignInScreen';
-import SignUpScreen from './screens/SignUpScreen';
-import ForgotPassScreen from './screens/ForgotPassScreen';
-import AuthContext from './context/AuthContext';
 import {AuthProvider} from './context/AuthContext';
 import Main from './components/Main';
 const Stack = createStackNavigator();
@@ -24,9 +15,9 @@ const Stack = createStackNavigator();
 const App = () => {
   return (
     <AuthProvider>
-    <ThemeProvider>
-      <Main />
-    </ThemeProvider>
+      <ThemeProvider>
+        <Main />
+      </ThemeProvider>
     </AuthProvider>
   );
 };

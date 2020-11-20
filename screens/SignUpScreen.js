@@ -1,16 +1,20 @@
 import { useHeaderHeight } from '@react-navigation/stack';
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Button, Text, Input } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
+import AuthContext, { AuthProvider } from '../context/AuthContext';
+
 
 const SignUpScreen = ({navigation}, props ) => {
+    const { data, isAuth } = useContext(AuthContext);
     const [email, setEmail] = useState('');
     const [password, setPassword ] = useState('');
     function signupHandler(){
         console.log(email, password);
         setEmail('');
         setPassword('');
+        isAuth();
     }
     return(
         <LinearGradient colors={['#7cffcb', '#74f2ce']} style={styles.screen}>
