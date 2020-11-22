@@ -1,16 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text, Input, Icon, Button} from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
+import AuthContext from '../context/AuthContext';
+
+import axios from 'axios';
 
 const SignInScreen = ({navigation}, props) => {
     const [email, setEmail ] = useState('');
     const [ password, setPassword ] = useState('');
-    function handleSubmit(){
-        console.log(email, password);
-        setEmail('');
-        setPassword('');
+    const { data , setToken } = useContext(AuthContext);
+
+    // handles the form 
+    async function handleSubmit(){
+        try{
+            const response = await axios.post('http://10.0.2.2:3000/signIn', { email, password});
+            setToken(response.data.token);
+         }
+         catch(err){
+             console.log(err.message)
+         }
     }
+
     return(
         <LinearGradient colors={['#7cffcb', '#74f2ce']} style={styles.screen}>
             <View style={styles.screen}>

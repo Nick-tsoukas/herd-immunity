@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../screens/HomeScreen';
@@ -7,6 +7,7 @@ import WelcomeScreen from '../screens/WelcomeScreen';
 import SignInScreen from '../screens/SignInScreen';
 import SignUpScreen from '../screens/SignUpScreen';
 import ForgotPassScreen from '../screens/ForgotPassScreen';
+import LoadingScreen from '../screens/LoadingScreen';
 import AuthContext from '../context/AuthContext';
 const Stack = createStackNavigator();
 
@@ -17,7 +18,12 @@ const Stack = createStackNavigator();
 // next step style the header for the sign up screens 
 
 const Main = ({navigation}, props) => {
-  let { data, isAuth} = useContext(AuthContext);
+  let { data, tryLocalToken} = useContext(AuthContext);
+
+  useEffect(() => {
+    tryLocalToken();
+    },[])
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">

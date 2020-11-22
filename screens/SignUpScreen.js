@@ -1,24 +1,23 @@
-import { useHeaderHeight } from '@react-navigation/stack';
 import React, { useState, useContext } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Button, Text, Input } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
-import AuthContext, { AuthProvider } from '../context/AuthContext';
+import AuthContext from '../context/AuthContext';
 import axios from 'axios';
 
 
 // need to start talking to the server and getting a token ... start here in the sign up screen
 // Needs validation in the form ... 
 const SignUpScreen = ({navigation}, props ) => {
-    const { data, isAuth } = useContext(AuthContext);
+    const { data , setToken } = useContext(AuthContext);
     const [email, setEmail] = useState('');
     const [password, setPassword ] = useState('');
 
+    // need to store token in async storage
     async function signupHandler(){
-        console.log(email)
         try{
            const response = await axios.post('http://10.0.2.2:3000/signUp', { email, password});
-            console.log(response.data);
+           setToken(response.data.token);
         }
         catch(err){
             console.log(err.message)
