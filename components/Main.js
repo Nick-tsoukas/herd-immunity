@@ -29,7 +29,7 @@ const Main = ({navigation}, props) => {
       <Stack.Navigator initialRouteName="Home">
       {data ? (
           <>
-            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen options={{headerShown: false}} name="Home" component={HomeScreen} />
             <Stack.Screen name="Profile" component={ProfileScreen} />
           </>
         ) : (

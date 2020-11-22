@@ -1,6 +1,6 @@
 import React, { useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+//  map api key AIzaSyCFoHG7plTqmWRfjpzEraKKs1jiHwGYbtE
 const AuthContext = React.createContext();
 
 export const AuthProvider = ({children}) => {
