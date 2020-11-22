@@ -4,18 +4,27 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Button, Text, Input } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import AuthContext, { AuthProvider } from '../context/AuthContext';
+import axios from 'axios';
 
 
+// need to start talking to the server and getting a token ... start here in the sign up screen
+// Needs validation in the form ... 
 const SignUpScreen = ({navigation}, props ) => {
     const { data, isAuth } = useContext(AuthContext);
     const [email, setEmail] = useState('');
     const [password, setPassword ] = useState('');
-    function signupHandler(){
-        console.log(email, password);
-        setEmail('');
-        setPassword('');
-        isAuth();
+
+    async function signupHandler(){
+        console.log(email)
+        try{
+           const response = await axios.post('http://10.0.2.2:3000/signUp', { email, password});
+            console.log(response.data);
+        }
+        catch(err){
+            console.log(err.message)
+        }
     }
+
     return(
         <LinearGradient colors={['#7cffcb', '#74f2ce']} style={styles.screen}>
             <View style={styles.screen}>
