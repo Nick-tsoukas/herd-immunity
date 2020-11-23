@@ -11,13 +11,8 @@ import LoadingScreen from '../screens/LoadingScreen';
 import AuthContext from '../context/AuthContext';
 const Stack = createStackNavigator();
 
-//  will need to write a function that checks for token in the async storage
-// can use conditional logic to show the sign in screen or the home screen
-
-// ==================
-// next step style the header for the sign up screens 
-
 const Main = ({navigation}, props) => {
+  // checks to see if there is a local token stored in the async storage 
   let { data, tryLocalToken} = useContext(AuthContext);
 
   useEffect(() => {

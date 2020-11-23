@@ -10,8 +10,8 @@ import Geolocation from 'react-native-geolocation-service';
 
 
 const HomeScreen = ({navigation}, props) => {
-    const [ lat, setLat ] = useState('');
-    const [ long, setLong ] = useState('');
+    const [ lat, setLat ] = useState(0);
+    const [ long, setLong ] = useState(0);
     
     const hasPermission = async () => {
         try{
@@ -57,30 +57,26 @@ const HomeScreen = ({navigation}, props) => {
           console.warn(err);
         }
       };
-    useEffect(() => {
+
+    useEffect( () => {
           locationPermission();
     },[]);
-    if(!lat){
-        return (
-            <View><Text>hello there is nothing</Text></View>
-        )
-    } else {
 
     return(
         <View style={styles.screen}>
             <MapView
             style={styles.map}
-            initialRegion={{
-            latitude: lat,
-            longitude: long,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-            }}
+            showsUserLocation={true}
+            region={
+              {longitude: long,
+              latitude: lat,
+              longitudeDelta: 0.004,
+              latitudeDelta: 0.009}
+            }
   />
         </View>
     )
         }
-}
 
 const styles = StyleSheet.create({
     screen: {

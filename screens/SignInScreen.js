@@ -14,7 +14,8 @@ const SignInScreen = ({navigation}, props) => {
     // handles the form 
     async function handleSubmit(){
         try{
-            const response = await axios.post('http://10.0.2.2:3000/signIn', { email, password});
+
+            const response = await axios.post('http://94703be6d950.ngrok.io/signIn', { email, password});
             setToken(response.data.token);
          }
          catch(err){
@@ -41,6 +42,10 @@ const SignInScreen = ({navigation}, props) => {
                     defaultValue={password}
                     onChangeText={password => setPassword(password)}
                     />
+                    <Button
+                title="Click Me"
+                onPress={() => navigation.navigate('Fun')}
+                />
                     <TouchableOpacity onPress={() => navigation.navigate('ForgotPass')}>
                         <View style={{width: '100%'}}>
                             <Text style={{textAlign: 'right', color: 'blue'}}>Forgot password ?</Text>
