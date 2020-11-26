@@ -1,14 +1,12 @@
 import React, { useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+// auth context 
 const AuthContext = React.createContext();
 
 export const AuthProvider = ({children}) => {
     const [ auth, setAuth ] = useState(null);
+    const [ loading, setLoading ] = useState(true);
     
-    //  should check to see if there is a token
-    function isAuth(){
-        setAuth(true);
-    }
     async function setToken(token){
         try{
            await AsyncStorage.setItem('token',token);
@@ -22,12 +20,18 @@ export const AuthProvider = ({children}) => {
         const token = await AsyncStorage.getItem('token');
         if(token){
             setAuth(token);
-        } else return null
+            setLoading(false);
+        } else {
+            console.log('else statement is try local token ')
+            setLoading(false);
+        }
     }
 
-    return <AuthContext.Provider value={{data: auth , setToken: setToken, tryLocalToken}}>
+    return (
+        <AuthContext.Provider value={{data: auth , loading: loading, setToken: setToken, tryLocalToken}}>
                 { children}
-           </AuthContext.Provider>
+        </AuthContext.Provider>
+    ) 
 };
 
 export default AuthContext;
