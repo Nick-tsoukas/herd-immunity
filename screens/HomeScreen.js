@@ -70,8 +70,8 @@ const HomeScreen = ({navigation}, props) => {
             region={
               {longitude: long,
               latitude: lat,
-              longitudeDelta: 0.004,
-              latitudeDelta: 0.009}
+              longitudeDelta: 0.10,
+              latitudeDelta: 0.10}
             }
   />
         </View>

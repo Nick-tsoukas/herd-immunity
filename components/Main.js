@@ -1,13 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, useHeaderHeight } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
+import { Icon } from 'react-native-elements'
 import HomeScreen from '../screens/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import WelcomeScreen from '../screens/WelcomeScreen';
 import SignInScreen from '../screens/SignInScreen';
 import SignUpScreen from '../screens/SignUpScreen';
+import SettingScreen from '../screens/SettingScreen';
+import ChartScreen from '../screens/Charts.js';
 import ForgotPassScreen from '../screens/ForgotPassScreen';
 import LoadingScreen from '../screens/LoadingScreen';
 import AuthContext from '../context/AuthContext';
@@ -38,9 +41,45 @@ const Main = ({navigation}, props) => {
     <NavigationContainer>
       {data ? (
           <>
-            <HomeTabs.Navigator initialRouteName="Home">
-              <Stack.Screen options={{headerShown: false}} name="Home" component={HomeScreen} />
-              <Stack.Screen name="Profile" component={ProfileScreen} />
+            <HomeTabs.Navigator
+             tabBarOptions={{style: {height: '10%', paddingBottom: 10}}}
+             initialRouteName="Home">
+              <Stack.Screen
+              options={{
+                tabBarIcon: () => <Icon
+                name='sc-telegram'
+                type='evilicon'
+                color='#517fa4'
+              />
+              }}
+               name="Home" component={HomeScreen} />
+              <Stack.Screen
+              options={{
+                tabBarIcon: () => <Icon
+                name='sc-telegram'
+                type='evilicon'
+                color='#517fa4'
+              />
+              }}
+               name="Profile" component={ProfileScreen} />
+              <Stack.Screen 
+              options={{
+                tabBarIcon: () => <Icon
+                name='sc-telegram'
+                type='evilicon'
+                color='#517fa4'
+              />
+              }}
+               name="Chart" component={ChartScreen} />
+              <Stack.Screen
+              options={{
+                tabBarIcon: () => <Icon
+                name='sc-telegram'
+                type='evilicon'
+                color='#517fa4'
+              />
+              }}
+               name="Setting" component={SettingScreen} />
             </HomeTabs.Navigator>
           </>
         ) : (
