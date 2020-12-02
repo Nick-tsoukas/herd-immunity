@@ -13,11 +13,23 @@ const HomeScreen = ({navigation}, props) => {
 
     const [ lat, setLat ] = useState(0);
     const [ long, setLong ] = useState(0);
+    const [locationMovement , setLocationMovement ] = useState({
+      "coords":
+       {"accuracy": 0, 
+        "altitude": 0,
+        "heading": 0,
+        "latitude": 0,
+        "longitude": 0,
+        "speed": 0},
+        "mocked": false, 
+        "timestamp": 0
+      });
 
     const watchLocation = () => {
+      console.log('watch location function is now running')
       Geolocation.watchPosition(
         (position) => {
-          console.log(position);
+          setLocationMovement(position);
         },
         (error) => {
           console.log(error.code, error.message);
@@ -86,6 +98,9 @@ const HomeScreen = ({navigation}, props) => {
             title="Start Watching Please"
             onPress={watchLocation}
             />
+            <View>
+          <Text>{locationMovement.coords.latitude.toString()}</Text>
+            </View>
           </View>
         </View>
     )
@@ -106,15 +121,3 @@ export default HomeScreen;
 
 
 // this is what the location data looks like
-
-// {
-//   "coords":
-//    {"accuracy": 5.89300012588501, 
-//     "altitude": 0,
-//     "heading": 173.00282287597656,
-//     "latitude": 41.9312083,
-//     "longitude": -87.9117359,
-//     "speed": 1.383662223815918},
-//     "mocked": false, 
-//     "timestamp": 1606930651245
-//   }
