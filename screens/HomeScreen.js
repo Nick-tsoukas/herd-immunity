@@ -7,10 +7,25 @@ import Geolocation from 'react-native-geolocation-service';
 import io from "socket.io-client";
 let socket = io("http://cbddf7fef8fe.ngrok.io");
 
+//  now I need to log the location as the user moves 
+
 const HomeScreen = ({navigation}, props) => {
 
     const [ lat, setLat ] = useState(0);
     const [ long, setLong ] = useState(0);
+
+    const watchLocation = () => {
+      Geolocation.watchPosition(
+        (position) => {
+          console.log(position);
+        },
+        (error) => {
+          console.log(error.code, error.message);
+        },
+        { enableHighAccuracy: true, distanceFilter: 1, interval: 1000, fastestInterval:1000 }
+    );
+    }
+
     const locationPermission = async () => {
       try {
         const granted = await PermissionsAndroid.request(
@@ -45,12 +60,14 @@ const HomeScreen = ({navigation}, props) => {
     };
 
     useEffect( () => {
-      console.log(socket)
+          locationPermission();
+    },[]);
+
+    useEffect(() => {
       socket.on('connect', (data) => {
         console.log('You are connected to the web socket right now ')
     }); 
-          locationPermission();
-    },[]);
+    },[])
 
     return(
         <View style={styles.screen}>
@@ -64,6 +81,12 @@ const HomeScreen = ({navigation}, props) => {
               latitudeDelta: 0.10}
             }
   />
+          <View style={{marginTop: 30}}>
+            <Button
+            title="Start Watching Please"
+            onPress={watchLocation}
+            />
+          </View>
         </View>
     )
         }
@@ -80,3 +103,18 @@ const styles = StyleSheet.create({
 })
 
 export default HomeScreen;
+
+
+// this is what the location data looks like
+
+// {
+//   "coords":
+//    {"accuracy": 5.89300012588501, 
+//     "altitude": 0,
+//     "heading": 173.00282287597656,
+//     "latitude": 41.9312083,
+//     "longitude": -87.9117359,
+//     "speed": 1.383662223815918},
+//     "mocked": false, 
+//     "timestamp": 1606930651245
+//   }
