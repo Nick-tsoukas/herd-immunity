@@ -15,4 +15,5 @@ see where other users are
 
 idintify where the herd immunity may be and the optimal times you should go out to the store or leisurly activity 
 
-use the activity recognition google api 
+Task list 
+- add web sockets to the front end app 

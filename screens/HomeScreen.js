@@ -12,7 +12,7 @@ import Geolocation from 'react-native-geolocation-service';
 const HomeScreen = ({navigation}, props) => {
     const [ lat, setLat ] = useState(0);
     const [ long, setLong ] = useState(0);
-    
+
     const hasPermission = async () => {
         try{
             const hasPermission =  await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
@@ -40,7 +40,7 @@ const HomeScreen = ({navigation}, props) => {
           if (granted === PermissionsAndroid.RESULTS.GRANTED) {
                 Geolocation.getCurrentPosition(
                     (position) => {
-                     console.log(position.coords)
+                     console.log(position.coords);
                       setLong(position.coords.longitude);
                       setLat(position.coords.latitude);
                     },
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     map: {
-        height: '50%',
+        height: '80%',
         width: '100%'
     }
 })
