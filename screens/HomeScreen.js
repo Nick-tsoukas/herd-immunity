@@ -3,12 +3,10 @@ import { View, StyleSheet, PermissionsAndroid } from 'react-native';
 import { Text, Button } from 'react-native-elements';
 import MapView from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
-// import socket from '../helpers/socket';
 import io from "socket.io-client";
 let socket = io("http://cbddf7fef8fe.ngrok.io");
 
-//  now I need to log the location as the user moves 
-
+// any time location movement state is updated what should we do ... emit locationmovement event to the web server
 const HomeScreen = ({navigation}, props) => {
 
     const [ lat, setLat ] = useState(0);
@@ -79,7 +77,9 @@ const HomeScreen = ({navigation}, props) => {
       socket.on('connect', (data) => {
         console.log('You are connected to the web socket right now ')
     }); 
-    },[])
+    socket.emit('location', locationMovement);
+
+    },[locationMovement])
 
     return(
         <View style={styles.screen}>
