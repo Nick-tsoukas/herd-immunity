@@ -1,14 +1,15 @@
 import React, { Component, useEffect, useState } from 'react';
-import { View, StyleSheet, PermissionsAndroid } from 'react-native';
+import { View, StyleSheet, PermissionsAndroid, ScrollView } from 'react-native';
 import { Text, Button } from 'react-native-elements';
 import MapView from 'react-native-maps';
+import {Marker} from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
 import io from "socket.io-client";
-let socket = io("http://cbddf7fef8fe.ngrok.io");
+let socket = io("http://4e088bb7dd2e.ngrok.io");
 
 // any time location movement state is updated what should we do ... emit locationmovement event to the web server
 const HomeScreen = ({navigation}, props) => {
-
+    const [ otherUsers, setOtherUsers ] = useState([]);
     const [ lat, setLat ] = useState(0);
     const [ long, setLong ] = useState(0);
     const [locationMovement , setLocationMovement ] = useState({
@@ -32,7 +33,7 @@ const HomeScreen = ({navigation}, props) => {
         (error) => {
           console.log(error.code, error.message);
         },
-        { enableHighAccuracy: true, distanceFilter: 1, interval: 1000, fastestInterval:1000 }
+        { enableHighAccuracy: true, interval: 2000, fastestInterval:2000 }
     );
     }
 
@@ -55,6 +56,7 @@ const HomeScreen = ({navigation}, props) => {
                   (position) => {
                     setLong(position.coords.longitude);
                     setLat(position.coords.latitude);
+                    // setLocationMovement(position)
                   },
                   (error) => {
                     console.log(error.code, error.message);
@@ -71,15 +73,17 @@ const HomeScreen = ({navigation}, props) => {
 
     useEffect( () => {
           locationPermission();
+          socket.on('connect', (data) => {
+            console.log('You are connected to the web socket right now ');
+        }); 
     },[]);
 
     useEffect(() => {
-      socket.on('connect', (data) => {
-        console.log('You are connected to the web socket right now ')
-    }); 
     socket.emit('location', locationMovement);
-
-    },[locationMovement])
+    socket.on('location', (data) => {
+      console.log(data)
+    });
+    },[locationMovement]);
 
     return(
         <View style={styles.screen}>
@@ -98,9 +102,21 @@ const HomeScreen = ({navigation}, props) => {
             title="Start Watching Please"
             onPress={watchLocation}
             />
-            <View>
-          <Text>{locationMovement.coords.latitude.toString()}</Text>
-            </View>
+              <View>
+                <Text>{locationMovement.coords.latitude.toString()}</Text>
+              </View>
+              <View>
+                {otherUsers.length ?
+                    otherUsers.map((u) => {
+                      return(
+                        <View>
+                          <Text>{u}</Text>
+                        </View>
+                      )
+                    })
+                    : <Text>No other users here</Text>
+                }
+              </View>
           </View>
         </View>
     )

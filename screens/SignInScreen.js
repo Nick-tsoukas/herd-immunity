@@ -14,7 +14,7 @@ const SignInScreen = ({navigation}, props) => {
     // handles the form 
     async function handleSubmit(){
         try{
-            const response = await axios.post('http://cbddf7fef8fe.ngrok.io/signIn', { email, password});
+            const response = await axios.post('http://4e088bb7dd2e.ngrok.io/signIn', { email, password});
             setToken(response.data.token);
          }
          catch(err){
