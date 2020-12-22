@@ -19,7 +19,9 @@ export const AuthProvider = ({children}) => {
     async function tryLocalToken(){
         const token = await AsyncStorage.getItem('token');
         if(token){
-            setAuth(token);
+            
+            // This funciton removes the token for testing purposes AsyncStorage.removeItem('token')
+            // setAuth(token);
             setLoading(false);
         } else {
             console.log('else statement is try local token ')

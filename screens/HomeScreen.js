@@ -4,53 +4,65 @@ import { Text, Button } from 'react-native-elements';
 import MapView from 'react-native-maps';
 import {Marker} from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
-// import io from "socket.io-client";
-// let socket = io("http://4e6d278f8a59.ngrok.io");
 import socket from "../helpers/socket";
-
-// any time location movement state is updated what should we do ... emit locationmovement event to the web server
+import axios from 'axios'
+// navigation is for react navigation library. Used to navigate to different screens
 const HomeScreen = ({navigation}, props) => {
-
-    const [ otherUsers, setOtherUsers ] = useState([]);
     const [ lat, setLat ] = useState(0);
     const [ long, setLong ] = useState(0);
-    const [locationMovement , setLocationMovement ] = useState({
-      "coords":
-       {"accuracy": 0, 
-        "altitude": 0,
-        "heading": 0,
-        "latitude": 0,
-        "longitude": 0,
-        "speed": 0},
-        "mocked": false, 
-        "timestamp": 0
-      });
+    const [locationMovement , setLocationMovement ] = useState([]);
+    // This location object will be used for testing only
+   let testLocation =  {
+      "coords":{
+         "accuracy":5,
+         "altitude":0,
+         "heading":2.494295120239258,
+         "latitude":41.92916,
+         "longitude":-87.8943802,
+         "speed":8.082158088684082
+      },
+      "mocked":false,
+      "timestamp":1607272587108
+   }
 
+     //  I don't know why I have this here {locationMovement.coords.latitude.toString()}
+    const stop = async () => {
+      await Geolocation.stopObserving();
+      axios.post('http://af1a75141417.ngrok.ioo/location', testLocation)
+
+    }
     const watchLocation = ()  => {
-      socket.on('message', (data) => {
-        console.log(data)
+      /* this code will let the server listen to the socket emit the location event back to the client
+      // Locatoin is the location event writen on the server
+      // socket.on('location', (data) => {
+      //   console.log(data);
       })
-      setInterval(() => {
-        socket.emit('message', {data: 'this is the message from the client'});
-      },2000)
-    //   Geolocation.watchPosition(
-    //     (position) => {
-    //       setLocationMovement(position);
-    //       so.emit('message', {data : 'this is a message from the client'})
-    //     },
-    //     (error) => {
-    //       console.log(error.code, error.message);
-    //     },
-    //     { enableHighAccuracy: true }
-    // );
+      */
+      Geolocation.watchPosition(
+        // Position is well the current position of the user
+        (position) => {
+          // setLocationMovement function sets the state, using ... the previous state and the uses the spred operator
+          setLocationMovement(preState => [...preState, position]);
+        },
+        // If there is an error all this will do is log the error
+        (error) => {
+          console.log(error.code, error.message);
+        },
+        // You can pass many options here
+        { enableHighAccuracy: true }
+    );
     }
 
+    
+    // This code gets location permission from the user
     const locationPermission = async () => {
       try {
+        // Async operation waits for the user to accept giving up location details
         const granted = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+          // Describes the pop up to ask user for permission
           {
-            title: "Cool Photo App Camera Permission",
+            title: "Herd Immunity",
             message:
               "Cool app need to access your location " +
               "so you can track if you were exposed to covid .",
@@ -60,31 +72,40 @@ const HomeScreen = ({navigation}, props) => {
           }
         );
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+              // This code gets the currnet location of the user and then sets the state .... Longitute and Latitude
               Geolocation.getCurrentPosition(
                   (position) => {
                     setLong(position.coords.longitude);
                     setLat(position.coords.latitude);
+                    // Why is this commented out
                     // setLocationMovement(position)
                   },
+                  // If there is an error this will only log out the error
                   (error) => {
                     console.log(error.code, error.message);
                   },
+                  // passes options to the geolocation function 
                   { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
               );
         } else {
+          // This will only log out that the location permission has been denied
           console.log("Location permission denied");
         }
       } catch (err) {
+        // Console.warn is just a red color console.log
         console.warn(err);
       }
     };
 
     useEffect( () => {
+      // This funciton will run only once right after the render if I am not mistaken
           locationPermission();
     },[]);
 
     useEffect(() => {
-
+      // socket.emit('location', locationMovement);
+      console.log(locationMovement)
+      // using the second argument this code will only run when the state of locaiontMovement state is updated
     },[locationMovement]);
 
     return(
@@ -95,18 +116,13 @@ const HomeScreen = ({navigation}, props) => {
             region={
               {longitude: long,
               latitude: lat,
-              longitudeDelta: 0.10,
-              latitudeDelta: 0.10}
+              longitudeDelta: 0.90,
+              latitudeDelta: 0.90}
             }
-  />
+          >
+           </MapView>
           <View style={{marginTop: 30}}>
-            <Button
-            title="Start Watching Please"
-            onPress={watchLocation}
-            />
-              <View>
-                <Text>{locationMovement.coords.latitude.toString()}</Text>
-              </View>
+           <Text>I should put a where are you going here</Text>
           </View>
         </View>
     )

@@ -16,7 +16,7 @@ const SignUpScreen = ({navigation}, props ) => {
     // need to store token in async storage
     async function signupHandler(){
         try{
-           const response = await axios.post('http://4e088bb7dd2e.ngrok.io/signUp', { email, password});
+           const response = await axios.post('http://af1a75141417.ngrok.io/signUp', { email, password});
            setToken(response.data.token);
         }
         catch(err){

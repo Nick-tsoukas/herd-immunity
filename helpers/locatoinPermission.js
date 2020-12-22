@@ -19,8 +19,8 @@ const locationPermission = async () => {
             Geolocation.getCurrentPosition(
                 (position) => {
                  console.log(position.coords);
-                //   setLong(position.coords.longitude);
-                //   setLat(position.coords.latitude);
+                  setLong(position.coords.longitude);
+                  setLat(position.coords.latitude);
                 },
                 (error) => {
                   // See error code charts below.

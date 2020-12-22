@@ -6,6 +6,7 @@ import AuthContext from '../context/AuthContext';
 
 import axios from 'axios';
 
+//  The Sign in screen works properly but need a lot of polish
 const SignInScreen = ({navigation}, props) => {
     const [email, setEmail ] = useState('');
     const [ password, setPassword ] = useState('');
@@ -14,7 +15,7 @@ const SignInScreen = ({navigation}, props) => {
     // handles the form 
     async function handleSubmit(){
         try{
-            const response = await axios.post('http://4e088bb7dd2e.ngrok.io/signIn', { email, password});
+            const response = await axios.post('http://af1a75141417.ngrok.io/signIn', { email, password});
             setToken(response.data.token);
          }
          catch(err){
