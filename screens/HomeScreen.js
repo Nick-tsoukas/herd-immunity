@@ -6,9 +6,14 @@ import {Marker} from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
 import socket from "../helpers/socket";
 import axios from 'axios'
+
+// ======= Main task is to get the user ID on all operations ===== 
 // navigation is for react navigation library. Used to navigate to different screens
 
-// ==== Next task is to save the location data to database
+/* ==== Next task is to save the location data to database
+I can save the data to the Database via postman no problem
+ - now I need to implement the code on the front end
+*/
 const HomeScreen = ({navigation}, props) => {
     const [ lat, setLat ] = useState(0);
     const [ long, setLong ] = useState(0);
